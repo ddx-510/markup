@@ -74,6 +74,31 @@
   }
 }
 
+/* Custom Toast Styling for Better Description Visibility */
+[data-sonner-toast] {
+  background: var(--popover) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--popover-foreground) !important;
+}
+
+[data-sonner-toast] [data-description] {
+  color: var(--popover-foreground) !important;
+  opacity: 0.8 !important;
+  font-size: 0.875rem !important;
+  margin-top: 2px !important;
+}
+
+[data-sonner-toast] [data-title] {
+  color: var(--popover-foreground) !important;
+  font-weight: 500 !important;
+}
+
+/* Make success toasts descriptions more visible */
+[data-sonner-toast][data-type="success"] [data-description] {
+  color: var(--popover-foreground) !important;
+  opacity: 0.85 !important;
+}
+
 /* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;

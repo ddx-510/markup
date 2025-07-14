@@ -191,7 +191,8 @@ function SortableItem({
 
     const isEditing = editingId === item.id;
     const isActive = item.type === 'file' && activeFileId === item.id;
-    const paddingLeft = item.level * 20 + 8; // Indentation based on level
+    // Reduced indentation per level to handle deeper nesting better
+    const paddingLeft = Math.min(item.level * 16, 80); // Max 80px indentation
 
     return (
         <>
@@ -199,8 +200,8 @@ function SortableItem({
                 ref={setNodeRef}
                 style={style}
                 className={`
-                    relative flex items-center gap-2 p-2 rounded-md cursor-pointer
-                    hover:bg-muted/50 group transition-colors
+                    relative flex items-center gap-1 p-2 rounded-md cursor-pointer
+                    hover:bg-muted/50 group transition-colors min-w-0
                     ${isActive ? 'bg-accent text-accent-foreground' : ''}
                 `}
                 {...attributes}
@@ -208,7 +209,7 @@ function SortableItem({
                 {/* Drag handle */}
                 <div
                     {...listeners}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing flex-shrink-0"
                     style={{ marginLeft: paddingLeft }}
                 >
                     <GripVertical className="h-4 w-4 text-muted-foreground" />
@@ -220,7 +221,7 @@ function SortableItem({
                         <Button
                             variant="ghost"
                             size="sm"
-                            className="h-auto w-auto p-0"
+                            className="h-auto w-auto p-0 flex-shrink-0"
                             onClick={() => onFolderToggle(item.id)}
                         >
                             {item.isExpanded ? (
@@ -230,21 +231,21 @@ function SortableItem({
                             )}
                         </Button>
                     ) : (
-                        <div className="w-4" /> // Spacer for files
+                        <div className="w-4 flex-shrink-0" /> // Spacer for files
                     )}
 
                     {item.type === 'folder' ? (
                         item.isExpanded ? (
-                            <FolderOpen className="h-4 w-4 text-blue-500" />
+                            <FolderOpen className="h-4 w-4 text-blue-500 flex-shrink-0" />
                         ) : (
-                            <Folder className="h-4 w-4 text-blue-500" />
+                            <Folder className="h-4 w-4 text-blue-500 flex-shrink-0" />
                         )
                     ) : (
-                        <FileText className="h-4 w-4 text-gray-500" />
+                        <FileText className="h-4 w-4 text-gray-500 flex-shrink-0" />
                     )}
 
                     {isEditing ? (
-                        <div className="flex items-center gap-1 flex-1">
+                        <div className="flex items-center gap-1 flex-1 min-w-0">
                             <Input
                                 value={editingName}
                                 onChange={(e) => setEditingName(e.target.value)}
@@ -252,14 +253,14 @@ function SortableItem({
                                     if (e.key === 'Enter') handleRename();
                                     if (e.key === 'Escape') cancelEditing();
                                 }}
-                                className="h-6 text-sm"
+                                className="h-6 text-sm flex-1 min-w-0"
                                 autoFocus
                             />
                             <Button
                                 variant="ghost"
                                 size="sm"
                                 onClick={handleRename}
-                                className="h-6 w-6 p-0"
+                                className="h-6 w-6 p-0 flex-shrink-0"
                             >
                                 <Save className="h-3 w-3" />
                             </Button>
@@ -267,7 +268,7 @@ function SortableItem({
                                 variant="ghost"
                                 size="sm"
                                 onClick={cancelEditing}
-                                className="h-6 w-6 p-0"
+                                className="h-6 w-6 p-0 flex-shrink-0"
                             >
                                 <X className="h-3 w-3" />
                             </Button>
@@ -275,12 +276,13 @@ function SortableItem({
                     ) : (
                         <>
                             <span
-                                className="flex-1 text-sm truncate"
+                                className="flex-1 text-sm truncate min-w-0"
                                 onClick={() => item.type === 'file' && onFileSelect(item.id)}
+                                title={item.name} // Add tooltip to show full name when truncated
                             >
                                 {item.name}
                             </span>
-                            <div className="opacity-0 group-hover:opacity-100 flex gap-1">
+                            <div className="opacity-0 group-hover:opacity-100 flex gap-1 flex-shrink-0">
                                 <Button
                                     variant="ghost"
                                     size="sm"

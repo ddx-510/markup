@@ -463,7 +463,7 @@ export function FileSidebarEnhanced({
     const activeItem = flatItems.find(item => item.id === activeId);
 
     return (
-        <Sidebar>
+        <Sidebar className="w-full max-w-80 min-w-60">
             <SidebarHeader className="border-b p-4">
                 <div className="flex items-center justify-between">
                     <h2 className="text-lg font-semibold">Files</h2>
@@ -490,7 +490,7 @@ export function FileSidebarEnhanced({
                 </div>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="overflow-x-auto">
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -588,24 +588,26 @@ export function FileSidebarEnhanced({
                                     items={itemIds}
                                     strategy={verticalListSortingStrategy}
                                 >
-                                    {flatItems.map((item) => (
-                                        <SortableItem
-                                            key={item.id}
-                                            item={item}
-                                            activeFileId={activeFileId}
-                                            onFileSelect={onFileSelect}
-                                            onFileDelete={onFileDelete}
-                                            onFolderDelete={onFolderDelete}
-                                            onFileRename={onFileRename}
-                                            onFolderRename={onFolderRename}
-                                            onFolderToggle={onFolderToggle}
-                                            editingId={editingId}
-                                            setEditingId={setEditingId}
-                                            editingName={editingName}
-                                            setEditingName={setEditingName}
-                                            activeId={activeId}
-                                        />
-                                    ))}
+                                    <div className="min-w-0">
+                                        {flatItems.map((item) => (
+                                            <SortableItem
+                                                key={item.id}
+                                                item={item}
+                                                activeFileId={activeFileId}
+                                                onFileSelect={onFileSelect}
+                                                onFileDelete={onFileDelete}
+                                                onFolderDelete={onFolderDelete}
+                                                onFileRename={onFileRename}
+                                                onFolderRename={onFolderRename}
+                                                onFolderToggle={onFolderToggle}
+                                                editingId={editingId}
+                                                setEditingId={setEditingId}
+                                                editingName={editingName}
+                                                setEditingName={setEditingName}
+                                                activeId={activeId}
+                                            />
+                                        ))}
+                                    </div>
                                 </SortableContext>
 
                                 <DragOverlay>

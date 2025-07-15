@@ -340,8 +340,8 @@ function AppContent() {
 
             {/* Main Content Area */}
             <SidebarInset className="flex flex-col min-h-screen">
-                {/* Toolbar - with proper mobile positioning */}
-                <header className="h-12 border-b flex items-center px-4 gap-4 flex-shrink-0 bg-background relative z-40">
+                {/* Toolbar */}
+                <header className="h-12 border-b flex items-center px-4 gap-4 flex-shrink-0 bg-background relative z-40 md:z-auto">
                     <SidebarTrigger />
                     <EditorToolbar
                         mode={editorMode}

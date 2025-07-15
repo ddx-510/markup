@@ -192,7 +192,8 @@ function SortableItem({
     const isEditing = editingId === item.id;
     const isActive = item.type === 'file' && activeFileId === item.id;
     // Reduced indentation per level to handle deeper nesting better
-    const paddingLeft = Math.min(item.level * 16, 80); // Max 80px indentation
+    // Even less indentation on mobile devices
+    const paddingLeft = Math.min(item.level * 12, 60); // Reduced from 16 to 12, max 60px
 
     return (
         <>
@@ -206,17 +207,19 @@ function SortableItem({
                 `}
                 {...attributes}
             >
-                {/* Drag handle */}
+                {/* Drag handle - hidden on mobile for better UX */}
                 <div
                     {...listeners}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing flex-shrink-0"
-                    style={{ marginLeft: paddingLeft }}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing flex-shrink-0 hidden md:flex"
                 >
                     <GripVertical className="h-4 w-4 text-muted-foreground" />
                 </div>
 
                 {/* Icon and content */}
-                <div className="flex items-center gap-2 flex-1 min-w-0">
+                <div
+                    className="flex items-center gap-2 flex-1 min-w-0"
+                    style={{ marginLeft: paddingLeft }}
+                >
                     {item.type === 'folder' ? (
                         <Button
                             variant="ghost"
@@ -282,7 +285,7 @@ function SortableItem({
                             >
                                 {item.name}
                             </span>
-                            <div className="opacity-0 group-hover:opacity-100 flex gap-1 flex-shrink-0">
+                            <div className="opacity-100 md:opacity-0 md:group-hover:opacity-100 flex gap-1 flex-shrink-0">
                                 <Button
                                     variant="ghost"
                                     size="sm"
@@ -465,7 +468,7 @@ export function FileSidebarEnhanced({
     const activeItem = flatItems.find(item => item.id === activeId);
 
     return (
-        <Sidebar className="w-full max-w-80 min-w-60">
+        <Sidebar className="w-full md:max-w-80 md:min-w-60">
             <SidebarHeader className="border-b p-4">
                 <div className="flex items-center justify-between">
                     <h2 className="text-lg font-semibold">Files</h2>
@@ -500,7 +503,7 @@ export function FileSidebarEnhanced({
                             {isCreatingFolder && (
                                 <SidebarMenuItem>
                                     <div className="flex items-center gap-2 p-2">
-                                        <Folder className="h-4 w-4" />
+                                        <Folder className="h-4 w-4 flex-shrink-0" />
                                         <Input
                                             value={newFolderName}
                                             onChange={(e) => setNewFolderName(e.target.value)}
@@ -512,14 +515,14 @@ export function FileSidebarEnhanced({
                                                 }
                                             }}
                                             placeholder="Folder name"
-                                            className="h-8 text-sm"
+                                            className="h-8 text-sm flex-1 min-w-0"
                                             autoFocus
                                         />
                                         <Button
                                             variant="ghost"
                                             size="sm"
                                             onClick={handleCreateFolder}
-                                            className="h-8 w-8 p-0"
+                                            className="h-8 w-8 p-0 flex-shrink-0"
                                         >
                                             <Save className="h-3 w-3" />
                                         </Button>
@@ -530,7 +533,7 @@ export function FileSidebarEnhanced({
                                                 setIsCreatingFolder(false);
                                                 setNewFolderName('');
                                             }}
-                                            className="h-8 w-8 p-0"
+                                            className="h-8 w-8 p-0 flex-shrink-0"
                                         >
                                             <X className="h-3 w-3" />
                                         </Button>
@@ -542,7 +545,7 @@ export function FileSidebarEnhanced({
                             {isCreatingFile && (
                                 <SidebarMenuItem>
                                     <div className="flex items-center gap-2 p-2">
-                                        <FileText className="h-4 w-4" />
+                                        <FileText className="h-4 w-4 flex-shrink-0" />
                                         <Input
                                             value={newFileName}
                                             onChange={(e) => setNewFileName(e.target.value)}
@@ -554,14 +557,14 @@ export function FileSidebarEnhanced({
                                                 }
                                             }}
                                             placeholder="File name"
-                                            className="h-8 text-sm"
+                                            className="h-8 text-sm flex-1 min-w-0"
                                             autoFocus
                                         />
                                         <Button
                                             variant="ghost"
                                             size="sm"
                                             onClick={handleCreateFile}
-                                            className="h-8 w-8 p-0"
+                                            className="h-8 w-8 p-0 flex-shrink-0"
                                         >
                                             <Save className="h-3 w-3" />
                                         </Button>
@@ -572,7 +575,7 @@ export function FileSidebarEnhanced({
                                                 setIsCreatingFile(false);
                                                 setNewFileName('');
                                             }}
-                                            className="h-8 w-8 p-0"
+                                            className="h-8 w-8 p-0 flex-shrink-0"
                                         >
                                             <X className="h-3 w-3" />
                                         </Button>

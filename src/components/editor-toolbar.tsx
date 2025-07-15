@@ -106,41 +106,44 @@ export function EditorToolbar({
     ];
 
     return (
-        <div className="flex items-center justify-between flex-1">
-            <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium text-foreground">
+        <div className="flex items-center justify-between flex-1 min-w-0">
+            <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+                {/* File name - truncated on mobile */}
+                <div className="flex items-center gap-2 min-w-0">
+                    <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <span className="text-sm font-medium text-foreground truncate">
                         {fileName || 'No file selected'}
                     </span>
                 </div>
 
                 {hasActiveFile && (
                     <>
-                        <Separator orientation="vertical" className="h-6" />
+                        <Separator orientation="vertical" className="h-6 hidden sm:block" />
 
+                        {/* Mode tabs - simplified on mobile */}
                         <Tabs value={mode} onValueChange={(value) => onModeChange(value as EditorMode)}>
                             <TabsList className="grid w-full grid-cols-3">
-                                <TabsTrigger value="edit" className="flex items-center gap-2">
+                                <TabsTrigger value="edit" className="flex items-center gap-1 md:gap-2">
                                     <Edit3 className="h-3 w-3" />
-                                    Edit
+                                    <span className="hidden sm:inline">Edit</span>
                                 </TabsTrigger>
-                                <TabsTrigger value="preview" className="flex items-center gap-2">
+                                <TabsTrigger value="preview" className="flex items-center gap-1 md:gap-2">
                                     <Eye className="h-3 w-3" />
-                                    Preview
+                                    <span className="hidden sm:inline">Preview</span>
                                 </TabsTrigger>
-                                <TabsTrigger value="split" className="flex items-center gap-2">
+                                <TabsTrigger value="split" className="flex items-center gap-1 md:gap-2">
                                     <Columns className="h-3 w-3" />
-                                    Split
+                                    <span className="hidden sm:inline">Split</span>
                                 </TabsTrigger>
                             </TabsList>
                         </Tabs>
 
+                        {/* Markdown formatting buttons - hidden on mobile */}
                         {(mode === 'edit' || mode === 'split') && onFormat && (
                             <>
-                                <Separator orientation="vertical" className="h-6" />
+                                <Separator orientation="vertical" className="h-6 hidden lg:block" />
 
-                                <div className="flex items-center gap-1">
+                                <div className="hidden lg:flex items-center gap-1">
                                     {markdownButtons.map(({ icon: Icon, format, tooltip }) => (
                                         <Button
                                             key={format}
@@ -161,35 +164,35 @@ export function EditorToolbar({
             </div>
 
             {hasActiveFile && (
-                <div className="flex items-center gap-4">
-                    {hasActiveFile && (
-                        <div className="flex items-center gap-2 text-xs">
-                            <span className={getSaveStatus().className}>
-                                {getSaveStatus().text}
-                            </span>
-                        </div>
-                    )}
+                <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
+                    {/* Save status - hidden on small mobile */}
+                    <div className="hidden sm:flex items-center gap-2 text-xs">
+                        <span className={getSaveStatus().className}>
+                            {getSaveStatus().text}
+                        </span>
+                    </div>
 
-                    <div className="flex items-center gap-2">
+                    {/* Action buttons - simplified on mobile */}
+                    <div className="flex items-center gap-1 md:gap-2">
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={onSave}
-                            className="flex items-center gap-2"
+                            className="flex items-center gap-1 md:gap-2"
                         >
                             <Save className="h-3 w-3" />
-                            Save
-                            <span className="text-xs text-muted-foreground ml-1">Ctrl+S</span>
+                            <span className="hidden sm:inline">Save</span>
+                            <span className="hidden md:inline text-xs text-muted-foreground ml-1">Ctrl+S</span>
                         </Button>
 
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={onDownload}
-                            className="flex items-center gap-2"
+                            className="flex items-center gap-1 md:gap-2"
                         >
                             <Download className="h-3 w-3" />
-                            Download
+                            <span className="hidden sm:inline">Download</span>
                         </Button>
                     </div>
                 </div>
